@@ -10,7 +10,8 @@ public class Reservation {
 	private Date checkin;
 	private Date checkOut;
 
-	private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy"); // Estatico para nao instanciar outro sdf em outra aplicação" 
+	private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy"); // Estatico para nao instanciar outro sdf
+																				// em outra aplicação"
 
 	public Reservation() {
 	}
@@ -37,13 +38,27 @@ public class Reservation {
 		return checkOut;
 	}
 
-	public void updateDates(Date checkIn, Date checkOut) {
+	
+	public String updateDates(Date checkIn, Date checkOut) {
+
+		Date now = new Date(); // Instancia a data atual! 
+
+		if (checkIn.before(now) || checkOut.before(now)) {
+			return "Error in reservation: Reservation dates fot update must be future";
+		}
+
+		if (!checkOut.after(checkOut)) {
+			return "Error in reservation: Check-out date must be after check-in date";
+		}
+
 		this.checkin = checkIn;
 		this.checkOut = checkOut;
+		return null;
 	}
 
 	public long duration() {
 		long diff = checkOut.getTime() - checkin.getTime();
+		System.out.println(diff);
 		return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 	}
 
